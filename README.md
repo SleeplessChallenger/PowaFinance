@@ -14,9 +14,9 @@ Trello link for joining: https://trello.com/invite/asdpowafinance/70553d42071ed1
 ## Product Description
 
 Our system is a multi-purposed app for finances which allows to:
-    - track finances for either individual or group of people
-    - observe selected stocks/bonds
-    - invest easily with zero-commission
+- track finances for either individual or group of people
+- observe selected stocks/bonds
+- invest easily with zero-commission
 
 Unique factor (aka purple cow) is fully free tier with minor adds related budgeting/finances 
     or paid tier with zero adds 
