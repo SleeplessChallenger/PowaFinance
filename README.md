@@ -44,7 +44,7 @@ Unique factor (aka purple cow) is fully free tier with minor adds related budget
   * app provides an outline for how much you'll spend in the future based on your previous spending
     * here traditional ML is used
 * adjustment of expenses to current inflation:
-  * unfortunately, inflation is real and dold-fashioned expenses tracker/projection is not enough
+  * unfortunately, inflation is real and old-fashioned expenses tracker/projection is not enough
   * your expenses will change according to the inflation ratio. Re-caclucation will happen once a quarter
 * provides option to create shared account where multiple users can enter their spending:
   * single account is great and neat, but sometimes family wants to keep finances up to sleeve
