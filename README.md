@@ -5,7 +5,7 @@ Trello link for joining: https://trello.com/invite/asdpowafinance/70553d42071ed1
 ## Brief outline
 
 1. Product name - Powa Finance
-2. Team members: TODO provide full name and GitHub (or smth like that)
+2. Team members:
    1. Slobodeniuk Daniil - Backend developer https://github.com/SleeplessChallenger
    2. Dmitry Egorov - Android Dev https://github.com/DmitrijEgorow 
    3. Ivan Reznik - Analyst/Tester https://github.com/reznikivan
