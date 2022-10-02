@@ -63,3 +63,7 @@ Unique factor (aka purple cow) is fully free tier with minor adds related budget
 1. WeBull https://www.webull.com/
 2. Robinhood: https://robinhood.com/us/en/
 3. Sberbank online
+
+## Database design
+
+![Alt text](./images/database_design.png?raw=true "Database design")
