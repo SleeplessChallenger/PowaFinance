@@ -1,3 +1,11 @@
 databaseChangeLog:
   - include:
       file: db/changelog/changeset/create-users-table.sql
+  - include:
+      file: db/changelog/changeset/create-groups-table.sql
+  - include:
+      file: db/changelog/changeset/create-expenses-table.sql
+  - include:
+      file: db/changelog/changeset/create-investments-table.sql
+  - include:
+      file: db/changelog/changeset/create-relation-users-groups.sql
