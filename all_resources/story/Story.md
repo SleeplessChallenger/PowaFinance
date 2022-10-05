@@ -39,5 +39,7 @@ A user is able to buy a particular Financial Asset from the generated IP provide
 * Primary scenario:
 * 1. User sends request to see a graph to the System
 * 2. System shows a graph of Wallet Performance to the User
-* Exceptions:
+* Exceptions: null
 
+## Story
+![Alt text](story.png?raw=true "Story map")
