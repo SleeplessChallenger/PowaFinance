@@ -1,6 +1,4 @@
-# Our project for the ASD course
-
-Trello link for joining: https://trello.com/invite/asdpowafinance/70553d42071ed1d02552d4f8e7e730ac
+# Our project
 
 ## Brief outline
 
