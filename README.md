@@ -1,5 +1,7 @@
 # Our project
 
+Google drive link with all the stuff: https://drive.google.com/drive/folders/1MkSPGF1lrQHcoD-xnvADpegFCmCPfwUf?usp=sharing
+
 ## Brief outline
 
 1. Product name - Powa Finance
