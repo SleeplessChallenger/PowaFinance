@@ -52,7 +52,7 @@ security: # to apply security globally
   powaFinanceAuth: [read_data, write_data]
 
 paths:
-  /my-expenses/{user_id}:
+  /my-expenses/{userId}:
     get:
       tags:
         - Expenses
@@ -68,7 +68,7 @@ paths:
             type: string
             default: 50
         - in: path
-          name: user identifier
+          name: userId
           description: Param to specify the particular user
           required: true
           schema:
@@ -105,6 +105,14 @@ paths:
       summary: Add new expense
       description: Add a new expense to the system
       operationId: postExpense
+      parameters:
+        - in: path
+          name: userId
+          description: Param to specify the particular user
+          required: true
+          schema:
+            type: string
+            default: no
       requestBody:
         description: Create new expense for the user that will be added to the database
         content:
@@ -132,7 +140,7 @@ paths:
         '405':
           description: Invalid input
 
-  /project-expenses/{user_id}:
+  /project-expenses/{userId}:
     get:
       tags:
         - Project expenses
@@ -141,7 +149,7 @@ paths:
         for prediction
       operationId: projectAllExpenses
       parameters:
-        - name: expenses-all
+        - name: userId
           in: path
           description: Path param to identify the user
           required: true
