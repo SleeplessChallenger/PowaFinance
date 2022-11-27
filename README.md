@@ -12,8 +12,14 @@
    3. Roman Dubinskiy - Frontend developer https://github.com/rvdubinskiy
 
 ## Project start-up
-1. `curl -X POST http://localhost:8080/add-user -d '{"userName": "OLOLO", "email": "ssss", "passHash": "randomPass"}' -H "Content-Typ
-   {"responseCode":200,"message":"Successfully added the user"}`
+1. create database:
+   * `psql postgres`
+   * `create database powa_finance;`
+2. CURL commands to throw:
+   - `curl -X POST http://localhost:8080/add-user -d '{"userName": "OLOLO", "email": "ssss", "passHash": "randomPass"}' -H "Content-Typ
+      {"responseCode":200,"message":"Successfully added the user"}`
+   - `curl http://localhost:8080/get-user-info/OLOLO`
+   - `curl http://localhost:8080/get-expense/OLOLO`
 
 ## Product Description
 
