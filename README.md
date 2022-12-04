@@ -16,8 +16,7 @@
    * `psql postgres`
    * `create database powa_finance;`
 2. CURL commands to throw:
-   - `curl -X POST http://localhost:8080/add-user -d '{"userName": "OLOLO", "email": "ssss", "passHash": "randomPass"}' -H "Content-Typ
-      {"responseCode":200,"message":"Successfully added the user"}`
+   - `curl -X POST http://localhost:8080/add-user -d '{"userName": "OLOLO", "email": "ssss", "passHash": "randomPass"}' -H "Content-Type`
    - `curl http://localhost:8080/get-user-info/OLOLO`
    - `curl http://localhost:8080/get-expense/OLOLO`
 
