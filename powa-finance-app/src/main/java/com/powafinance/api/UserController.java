@@ -1,9 +1,9 @@
 package com.powafinance.api;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.powafinance.dto.Response;
 import com.powafinance.dto.UserDto;
+import com.powafinance.dto.Usernames;
 import com.powafinance.persistence.table.User;
 import com.powafinance.service.UserService;
 import com.powafinance.utils.Utils;
@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Validated
 @RestController
@@ -26,6 +28,8 @@ public class UserController {
     private static final String USER_CREATION_API = "/add-user";
     private static final String USER_INFO_API = "/get-user-info/{username}";
     private static final String USER_DELETE_API = "/delete-user/{username}";
+    private static final String USERS_RETRIEVE_ALL = "/retrieve-all-users";
+    private static final String USER_UPDATE_API = "/update-all-user";
 
     private final UserService userService;
 
@@ -54,14 +58,34 @@ public class UserController {
     }
 
     @DeleteMapping(path = USER_DELETE_API, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> deleteByUsername(@PathVariable @NotBlank String username) throws JsonProcessingException {
-        final User user = userService.deleteUserByUsername(username);
+    public ResponseEntity<Response> deleteByUsername(@PathVariable @NotBlank String username) throws JsonProcessingException {
+        userService.deleteUserByUsername(username);
+        return ResponseEntity.ok(Response.builder()
+                .responseCode(HttpStatus.ACCEPTED.value())
+                .message(String.format("User = %s deleted", username)).build());
+    }
+
+    @PatchMapping(path = USER_UPDATE_API, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> updateUsersByName(@NotNull @RequestBody Usernames usernames) {
+        userService.updateCache(usernames);
         return ResponseEntity.ok(Response.builder()
                 .responseCode(HttpStatus.ACCEPTED.value())
                 .message(String.format(
-                        "User = %s deleted. User data = %s",
-                        username,
-                        Utils.MAPPER.writeValueAsString(user))).build());
+                        "User with old username = %s updated for new username = %s",
+                        usernames.getOldName(), usernames.getNewName()
+                )).build()
+        );
+    }
+
+
+    @GetMapping(path = USERS_RETRIEVE_ALL, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getAllUsers() throws JsonProcessingException {
+        final List<User> allUsers = userService.retrieveAllUsers();
+        return ResponseEntity.ok(Response.builder()
+                .responseCode(HttpStatus.OK.value())
+                .message(String.format("All users: %s", Utils.MAPPER.writeValueAsString(allUsers)))
+                .build()
+        );
     }
 
     @ExceptionHandler(Exception.class)
