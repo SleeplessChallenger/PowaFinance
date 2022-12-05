@@ -25,7 +25,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
             nativeQuery = true)
     List<User> findAllUsers();
 
-    @Modifying
+    @Modifying(flushAutomatically = true)
     @Query(value = "UPDATE {h-schema}users SET username = :newUserName WHERE username = :oldUserName",
             nativeQuery = true)
     void updateUser(@Param("oldUserName") String oldUserName, @Param("newUserName") String newUserName);
