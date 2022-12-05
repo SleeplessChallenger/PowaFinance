@@ -48,9 +48,6 @@ components:
           scopes:
             read_data: read all data from you account
             write_data: write all data to your account
-security: # to apply security globally
-  powaFinanceAuth: [read_data, write_data]
-
 paths:
   /my-expenses/{userId}:
     get:
@@ -139,7 +136,6 @@ paths:
           description: id of the user not found
         '405':
           description: Invalid input
-
   /project-expenses/{userId}:
     get:
       tags:
@@ -157,7 +153,7 @@ paths:
             type: string
             default: no
       responses:
-        '200'
+        '200':
           description: successfully projected expenses for the next quarter
           content:
             application/json:
@@ -177,7 +173,60 @@ paths:
           description: Not enough data for prediction
         '404':
           description: Unique identifier for the user is not provided
-  /login
+  /get-news:
+    get:
+      tags:
+        - News
+      summary: Endpoint for retrieving news
+      description: This endpoint retrieves top-notch news from news provider
+      operationId: newsEndpoint
+      responses:
+        '200':
+          description: successfully retrieved data from the news API
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: id of the news
+                  title:
+                    type: string
+                  content:
+                    type: string
+        '400':
+          description: Problems with connection
+  /buy-financial-asset:
+    post:
+      tags:
+        - Financial Asset
+      summary: Endpoint for buying financial asset
+      description: This endpoint gives you an ability to buy a financial asset
+      operationId: financialAssetEndpoint
+      requestBody:
+        description: Feature for buying financial asset
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  description: unique identifier of the financial asset
+                sum:
+                  type: number
+                  multipleOf: 0.1
+                title:
+                  type: string
+                  description: description of the financial asset
+      responses:
+        '200':
+            description: successful login/register
+            # As we use OAuth2, we don't need any headers
+        '400':
+          description: invalid data provided
+  /login:
     post:
       tags:
         - Login
@@ -212,8 +261,6 @@ paths:
       operationId: logoutEndpoint
       responses:
         '200':
-           text/plain:
-            schema:
-              type: string
+           description: successful login/register
         '400':
             description: Network issues
