@@ -41,7 +41,7 @@
 4. Project expenses for the next quarter
 
     * Successful case:
-      - Step 1: User clicks button "Project my expenses for the next quarter"
+      - Step 1: User clicks "Project my expenses for the next quarter"
       - App: aggregates user's data regarding expenses and then makes request to AWS where ML model is hosted
       - Step 2: User observes pop-up: "expenses are being calculated, plz wait"
       - App: gets response from AWS and presents data to the User
