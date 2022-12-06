@@ -1,6 +1,10 @@
 @startuml
 left to right direction
 actor "PowaFinance User" as fc
+actor "Trading Platform Admin" as tc
+actor "News API Admin" as nc
+actor "AWS API Admin" as as
+
 rectangle "PowaFinance Android App" {
   usecase "Login" as UC1
   usecase "Add new expense" as UC2
@@ -11,28 +15,16 @@ rectangle "PowaFinance Android App" {
   usecase "Handle invalid login or password" as UC7
 }
 
-rectangle "AWS" {
-  usecase "ML model" as UC8
-}
-
-rectangle "News provider" {
-  usecase "News Platform" as UC9
-}
-rectangle "Trading platform" {
-  usecase "Buy financial asset" as UC10
-}
-
 fc --> UC1
 fc --> UC2
 fc --> UC3
 fc --> UC4
 fc --> UC5
 fc --> UC6
-UC3 --> UC9
+tc --> UC5
+nc --> UC3
+as --> UC4
 
 UC7 -[dashed]-> UC1 : <<extends>>
 
-UC4 --> UC8
-
-UC5 -> UC10
 @enduml
