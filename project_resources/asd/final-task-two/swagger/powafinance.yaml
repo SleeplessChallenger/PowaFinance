@@ -1,0 +1,354 @@
+openapi: 3.0.3
+info:
+  title: PowaFinance - OpenAPI 3.0
+  contact:
+    email: dvslobodenyuk@edu.hse.ru
+  description: |- 
+    This spec is done in Swagger and based on OpenApi specification.
+    Useful links regarding our project
+      - [PowaFinance repo](https://github.com/SleeplessChallenge/PowaFinance)
+  termsOfService: http://swagger.io/terms/
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.11
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+  - url: https://powafinance.swagger.io/api/v3
+tags:
+  - name: user
+    description: Operations about user
+  - name: expenses
+    description: Access to all the expenses of the user
+  - name: project-expenses
+    description: Access to the projection of expenses for the next quarter
+  - name: news
+    description: Get all news
+  - name: financial asset
+    description: all operations with financial assets
+
+components:
+  securitySchemes:
+    powaFinanceAuth:
+      type: oauth2
+      description: This API uses OAuth 2 with the implicit grant flow. [More info](https://api.example.com/docs/auth)
+      flows:
+        implicit:
+          authorizationUrl: https://api.example.com/oauth2/authorize
+          scopes:
+            read_data: read all data from you account
+            write_data: write all data to your account
+paths:
+  /change-user:
+    post:
+      tags:
+        - user
+      summary: make changes to the user
+      description: This endpoint allows to make changes to the account
+      operationId: changeUser
+      requestBody:
+        description: Feature for changing the user
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  description: unique identifier of the user
+                username:
+                  type: string
+                  description: unique username of the user
+                password:
+                  type: string # hash
+                  description: pasword of this user
+      responses:
+        '200':
+          description: Successfully changed the user data
+        '400':
+          description: Bad request (maybe, some data is incorrect)
+      security:
+        - powaFinanceAuth:
+          - read_data:new_expense
+          - write_data:new_expense
+  /my-expenses/{userId}:
+    get:
+      tags:
+        - expenses
+      summary: Retrieves expenses for the user
+      description: Retrieves all the expenses for the user
+      operationId: getExpenses
+      parameters:
+        - in: query
+          name: expense-size
+          description: Param to limit amount of expenses presented for the user (will be newest to oldest)
+          required: false
+          schema:
+            type: string
+            default: 50
+        - in: path
+          name: userId
+          description: Param to specify the particular user
+          required: true
+          schema:
+            type: string
+            default: no
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: id of the user that was used for retrieval
+                  expense_id:
+                    type: integer
+                    description: id of the particular expense
+                  sum:
+                    type: number
+                    multipleOf: 0.1
+                    description: The sum of the particular expense
+                  createdDate:
+                    type: string
+                    format: date
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: No expenses found
+      security:
+        - powaFinanceAuth:
+          - read_data:new_expense
+          - write_data:new_expense
+    post:
+      tags:
+        - expenses
+      summary: Add new expense
+      description: Add a new expense to the system
+      operationId: postExpense
+      parameters:
+        - in: path
+          name: userId
+          description: Param to specify the particular user
+          required: true
+          schema:
+            type: string
+            default: no
+      requestBody:
+        description: Create new expense for the user that will be added to the database
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                sum:
+                  type: number
+                  multipleOf: 0.1
+                  description: The sum of the particular expense
+                createdDate:
+                  type: string
+                  format: date
+        required: true
+      responses:
+        '200':
+          description: Expense added successfully
+          content:
+            text/plain:
+              schema:
+                type: string
+        '404':
+          description: id of the user not found
+        '405':
+          description: Invalid input
+      security:
+        - powaFinanceAuth:
+          - read_data:new_expense
+          - write_data:new_expense
+  /project-expenses/{userId}:
+    get:
+      tags:
+        - project-expenses
+      summary: Get projection for expenses
+      description: Use Expenses microservice for retrieving data and AWS service\
+        for prediction
+      operationId: projectAllExpenses
+      parameters:
+        - name: userId
+          in: path
+          description: Path param to identify the user
+          required: true
+          schema:
+            type: string
+            default: no
+      responses:
+        '200':
+          description: successfully projected expenses for the next quarter
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: id of the prediction
+                  predicted_sum:
+                    type: number
+                    multipleOf: 0.1
+                  predicted_range:
+                    type: string
+                    format: date
+        '400':
+          description: Not enough data for prediction
+        '404':
+          description: Unique identifier for the user is not provided
+      security:
+        - powaFinanceAuth:
+          - read_data:new_expense
+          - write_data:new_expense
+  /get-news:
+    get:
+      tags:
+        - news
+      summary: Endpoint for retrieving news
+      description: This endpoint retrieves top-notch news from news provider
+      operationId: newsEndpoint
+      responses:
+        '200':
+          description: successfully retrieved data from the news API
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: id of the news
+                  title:
+                    type: string
+                  content:
+                    type: string
+        '400':
+          description: Problems with connection
+      security:
+        - powaFinanceAuth:
+          - read_data:new_expense
+          - write_data:new_expense
+  /buy-financial-asset:
+    post:
+      tags:
+        - financial asset
+      summary: Endpoint for buying financial asset
+      description: This endpoint gives you an ability to buy a financial asset
+      operationId: financialAssetEndpointPost
+      requestBody:
+        description: Feature for buying financial asset
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  description: unique identifier of the financial asset
+                sum:
+                  type: number
+                  multipleOf: 0.1
+                title:
+                  type: string
+                  description: description of the financial asset
+      responses:
+        '200':
+            description: successfully added
+        '400':
+          description: invalid data provided
+    get:
+      tags:
+        - financial asset
+      summary: Endpoint for retrieving bought financial asset
+      description: This endpoint gives you an ability to retrieve a financial asset
+      operationId: financialAssetEndpointGet
+      responses:
+        '200':
+          description: successfully retrieved data from the news API
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: id of the asset
+                  title:
+                    type: string
+                  sum:
+                    type: number
+                    multipleOf: 0.1
+        '400':
+          description: illegal id
+  /register:
+    post:
+      tags:
+        - auth
+      summary: Endpoint to register
+      description: This endpoint allows user to register the account
+      operationId: registerEndpoint
+      requestBody:
+        description: Register ability for the user
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                login:
+                  type: string
+                  description: login to register the user to the system
+                password:
+                  type: string
+                  description: password which will be cached further
+      responses:
+        '200':
+          description: successful register
+        '400':
+          description: invalid data provided
+  /login:
+    post:
+      tags:
+        - auth
+      summary: Endpoint to login
+      description: Login to the service + background authentization and authorization
+      operationId: loginEndpoint
+      requestBody:
+        description: Login ability for the user
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                login:
+                  type: string
+                  description: login of the user in the system
+                password:
+                  type: string # actually, we hash it
+                  description: hash of the password for the user
+      responses:
+        '200':
+            description: successful login
+            # As we use OAuth2, we don't need any headers
+        '400':
+          description: invalid data provided
+  /logout:
+    get:
+      tags:
+        - auth
+      summary: Endpoint to logout of the account
+      description: This endpoint allows user to logout from the account
+      operationId: logoutEndpoint
+      responses:
+        '200':
+           description: successful logout
+        '400':
+            description: Network issues
